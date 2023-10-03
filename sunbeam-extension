@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-set -euo pipefail
+set -e
 
 # if no arguments are passed, return the extension's manifest
 if [ $# -eq 0 ]; then
@@ -26,7 +26,7 @@ if [ $# -eq 0 ]; then
   exit 0
 fi
 
-COMMAND=$(sunbeam query -r '.command' <<< "$1")
+COMMAND=$(echo "$1" | sunbeam query -r '.command')
 
 if [ "$COMMAND" = "list-docsets" ]; then
   # shellcheck disable=SC2016
@@ -50,7 +50,7 @@ if [ "$COMMAND" = "list-docsets" ]; then
     }
   ' | sunbeam query -s '{ type: "list", items: .}'
 elif [ "$COMMAND" = "list-entries" ]; then
-  SLUG=$(sunbeam query -r '.params.slug' <<< "$1")
+  SLUG=$(echo "$1" | sunbeam query -r '.params.slug')
   # shellcheck disable=SC2016
   sunbeam fetch "https://devdocs.io/docs/$SLUG/index.json" | sunbeam query --arg slug="$SLUG" '.entries[] |
     {
