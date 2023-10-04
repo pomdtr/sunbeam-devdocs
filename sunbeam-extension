@@ -6,7 +6,6 @@ set -e
 if [ $# -eq 0 ]; then
   sunbeam query -n '{
     title: "DevDocs",
-    root: "list-docsets",
     commands: [
       {
         name: "list-docsets",
