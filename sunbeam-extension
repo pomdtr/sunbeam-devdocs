@@ -3,7 +3,7 @@
 set -e
 
 # if no arguments are passed, return the extension's manifest
-if [ $# -eq 1 ] && [ "$1" = "manifest" ]; then
+if [ "$0" = "manifest" ]; then
   sunbeam query -n '{
     title: "DevDocs",
     commands: [
@@ -25,9 +25,7 @@ if [ $# -eq 1 ] && [ "$1" = "manifest" ]; then
   exit 0
 fi
 
-INPUT=$(cat)
-COMMAND=$(echo "$INPUT" | sunbeam query -r '.command')
-if [ "$COMMAND" = "list-docsets" ]; then
+if [ "$0" = "list-docsets" ]; then
   # shellcheck disable=SC2016
   sunbeam fetch https://devdocs.io/docs/docs.json | sunbeam query '.[] |
     {
@@ -48,8 +46,8 @@ if [ "$COMMAND" = "list-docsets" ]; then
       ]
     }
   ' | sunbeam query -s '{ type: "list", items: .}'
-elif [ "$COMMAND" = "list-entries" ]; then
-  SLUG=$(echo "$INPUT" | sunbeam query -r '.params.slug')
+elif [ "$0" = "list-entries" ]; then
+  SLUG=$(sunbeam query -r '.params.slug')
   # shellcheck disable=SC2016
   sunbeam fetch "https://devdocs.io/docs/$SLUG/index.json" | sunbeam query --arg slug="$SLUG" '.entries[] |
     {
