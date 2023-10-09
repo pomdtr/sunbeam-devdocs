@@ -17,7 +17,7 @@ if [ $# -eq 0 ]; then
         title: "List Entries from Docset",
         mode: "view",
         params: [
-          {name: "slug", type: "string", description: "docset to search"}
+          {name: "slug", type: "string", required: true, description: "docset to search"}
         ]
       }
     ]
